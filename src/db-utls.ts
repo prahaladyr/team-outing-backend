@@ -15,6 +15,7 @@ export function connectToDatabaseServer() {
             }
             databaseClient = returnedDatabaseClient;
             resolve();
+            console.log(`Database Connected to ${DB_NAME}`)
         });
     })
 }

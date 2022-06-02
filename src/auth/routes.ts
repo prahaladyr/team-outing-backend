@@ -17,7 +17,6 @@ authRoutes.post('/signup/', asyncHandler(async (request, response) => {
     const userCollection = getDatabaseClient().db(DB_NAME).collection('users');
     
     // Check if form is filled
-    console.log(request.body)
     if (!name || !email || !password) {
         response.status(400);
         response.send("Please fill the required fields");
