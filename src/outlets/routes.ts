@@ -129,8 +129,15 @@ outletRoutes.post('/clearAllUserOutlets/', jwtAuthentication, async (request, re
         return;
     }
 
-
     return;
+})
+
+outletRoutes.get('/userOutlets', jwtAuthentication, async (request, response) => {
+    const selectedOutletsCollections = getDatabaseClient().db(DB_NAME).collection('selectedOutlets');
+    const allOutlets = await selectedOutletsCollections.find().toArray()
+    
+    response.status(200);
+    response.json(allOutlets);
 })
 
 
