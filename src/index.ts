@@ -4,6 +4,7 @@ import passport from 'passport';
 import { connectToDatabaseServer } from './db-utls';
 import authRoutes from './auth/routes';
 import outletRoutes from './outlets/routes';
+import adminRoutes from './admin/routes';
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(passport.initialize());
 app.set('port', process.env.PORT || 8001);
 app.use('/auth/', authRoutes);
 app.use('/outlets/', outletRoutes);
+app.use('/admin/', adminRoutes);
 
 app.get('/', (request, response) => {
     response.send('Server running' + app.get('port'));

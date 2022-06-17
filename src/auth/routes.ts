@@ -138,4 +138,5 @@ authRoutes.get('/getUserInfo', asyncHandler(async (request, response) => {
     });
 }));
 
+
 export default authRoutes;

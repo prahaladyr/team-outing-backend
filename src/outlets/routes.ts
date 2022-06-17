@@ -118,7 +118,7 @@ outletRoutes.post('/addUserOutlets/', jwtAuthentication, async (request, respons
     return;
 })
 
-outletRoutes.post('/clearAllUserOutlets/', jwtAuthentication, async (request, response) => {
+outletRoutes.get('/clearAllUserOutlets/', jwtAuthentication, async (request, response) => {
     const selectedOutletsCollections = getDatabaseClient().db(DB_NAME).collection('selectedOutlets');
 
     try {
@@ -128,7 +128,6 @@ outletRoutes.post('/clearAllUserOutlets/', jwtAuthentication, async (request, re
     } catch {
         return;
     }
-
     return;
 })
 
