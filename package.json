@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts && tsc && node dist/src/index.js",
-    "start:dev": "nodemon src/index.ts && tsc && node dist/src/index.js",
+    "start": "nodemon src/index.ts",
+    "start:dev": "nodemon src/index.ts",
     "load-library": "node dist/management-scripts/compile-library.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
