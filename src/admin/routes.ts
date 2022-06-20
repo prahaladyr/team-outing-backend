@@ -2,20 +2,14 @@ import express from "express";
 import { DB_NAME, getDatabaseClient } from '../db-utls';
 import bcrypt from 'bcrypt';
 import asyncHandler from 'express-async-handler';
-import sendGridMail, { MailDataRequired } from '@sendgrid/mail';
-import { ObjectId } from 'mongodb';
-import { generateJWT } from "../auth/auth";
 import passport from "passport";
-
 
 export const jwtAuthentication = passport.authenticate('jwt', { session: false });
 
 const adminRoutes = express.Router();
 const SALT_ROUNDS = 12;
 
-
-
-adminRoutes.get('/register', asyncHandler(async (request, response) => {
+adminRoutes.post('/register', asyncHandler(async (request, response) => {
     const name: string = request.body.name;
     const password: string = request.body.password;
     const email: string = request.body.email;
@@ -87,7 +81,7 @@ adminRoutes.put('/updateAdmin', asyncHandler(async (request, response) => {
     return;
 }));
 
-adminRoutes.get('/login', asyncHandler(async (request, response) => {
+adminRoutes.post('/login', asyncHandler(async (request, response) => {
     const name: string = request.body.name;
     const password: string = request.body.password;
 
@@ -142,5 +136,12 @@ adminRoutes.get('/login', asyncHandler(async (request, response) => {
     return;
 }));
 
+adminRoutes.get('/getAllAdminInfo', asyncHandler(async (request, response) =>{
+    const adminCollection = getDatabaseClient().db(DB_NAME).collection('admin');
+    const allAdmins = await adminCollection.find().toArray();
+
+    response.status(200);
+    response.json(allAdmins);
+}));
 
 export default adminRoutes;

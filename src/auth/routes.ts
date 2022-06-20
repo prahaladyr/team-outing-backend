@@ -2,12 +2,14 @@ import express from 'express';
 import { DB_NAME, getDatabaseClient } from '../db-utls';
 import bcrypt from 'bcrypt';
 import asyncHandler from 'express-async-handler';
-import sendGridMail, { MailDataRequired } from '@sendgrid/mail';
 import { generateJWT } from './auth';
 import { ObjectId } from 'mongodb';
+import passport from 'passport';
 
 const authRoutes = express.Router();
 const SALT_ROUNDS = 12;
+
+export const jwtAuthentication = passport.authenticate('jwt', { session: false });
 
 authRoutes.post('/signup/', asyncHandler(async (request, response) => {
     const name: string = request.body.name;
@@ -94,6 +96,8 @@ authRoutes.post('/login/', async (request, response) => {
             response.send({
                 id: matchedUser._id,
                 token: generateJWT(matchedUser._id),
+                name: matchedUser.name,
+                email: matchedUser.email
             });
         } else {
             response.status(400);
@@ -107,36 +111,5 @@ authRoutes.post('/login/', async (request, response) => {
 
     return;
 });
-
-authRoutes.get('/getUserInfo', asyncHandler(async (request, response) => {
-    const _id: string = request.body.id;
-    const userCollection = getDatabaseClient().db(DB_NAME).collection('users');
-
-    if (!_id) {
-        response.status(400);
-        response.send("User ID Required");
-        return;
-    }
-
-    let users = await userCollection.find(
-        { _id: new ObjectId(_id) }
-    ).toArray();
-
-    let matchedUser = users[0];
-
-    if(!matchedUser){
-        response.status(400);
-        response.send("Unable to get User");
-        return;
-    }
-
-    response.status(200);
-    response.send({
-        name: matchedUser.name,
-        email: matchedUser.email,
-        id: matchedUser._id
-    });
-}));
-
 
 export default authRoutes;

@@ -16,7 +16,6 @@ outletRoutes.post('/add/', jwtAuthentication, async (request, response) => {
     const outletName: string = request.body.outletName;
     const outletType: string = request.body.outletType;
     const outletAddress: string = request.body.outletAddress;
-    const outletLogo: string = request.body.outletLogo;
 
     const outletCollections = getDatabaseClient().db(DB_NAME).collection('outlets');
 
@@ -45,7 +44,6 @@ outletRoutes.post('/add/', jwtAuthentication, async (request, response) => {
         outletCollections.insertOne({
             outletName,
             outletAddress,
-            outletLogo,
             outletType,
         });
 
@@ -138,6 +136,5 @@ outletRoutes.get('/userOutlets', jwtAuthentication, async (request, response) =>
     response.status(200);
     response.json(allOutlets);
 })
-
 
 export default outletRoutes;
